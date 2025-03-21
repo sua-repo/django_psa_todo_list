@@ -35,3 +35,26 @@ todo/urls.py에서 path("", todo_list, name="todo_list"),
     이건 앱 이름을 명시적으로 지정하는 방식
     프로젝트 규모가 커져서 앱이 여러 개 있을 때는 이렇게 써주는 게 가독성에 도움이 될 수도 있음
     단점은 나중에 앱 이름이 바뀌면 이걸 다 찾아서 바꿔야 함
+
+
+## is_valid() 사용하려고 했는데 오류 남
+    📌 전에 is_valid()를 사용했던 경우
+        ✔ Django의 Form 또는 ModelForm을 사용할 때만 is_valid()를 쓸 수 있음!
+        ✔ is_valid()는 폼 데이터가 유효한지 검증하는 메서드
+        ✔ 예전에 사용했던 is_valid()는 Django의 forms.py에서 정의한 폼 객체에서 쓴 거야!
+
+    📌 하지만 지금은?
+        ✔ 우리는 그냥 request.POST를 바로 가져와서 처리하고 있음
+        ✔ request.POST는 단순한 QueryDict 객체라서 is_valid()가 없음!
+        ✔ 그래서 is_valid()를 쓰려면 Django의 Form을 먼저 만들어야 함!
+
+    📌 todo/forms.py
+    from django import forms
+    from .models import Todo
+
+    class TodoForm(forms.ModelForm):  # ✅ ModelForm을 사용
+        class Meta:
+            model = Todo
+            fields = ["title"]  # ✅ title 필드만 사용
+
+    추가하면 is_valid() 사용 가능 / 일단 사용하진 않겠음
