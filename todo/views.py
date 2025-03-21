@@ -45,3 +45,19 @@ def completed_todos(request):
     todos = Todo.objects.filter(is_completed=True)  # 완료순
     # todos = Todo.objects.filter(is_completed=True).order_by('-created_at')    # 생성순
     return render(request, "todo/completed_list.html", {"todos": todos})
+
+
+# dev_5
+
+def edit_todo(request, todo_id) : 
+    todo = get_object_or_404(Todo, id = todo_id)
+    
+    if request.method == "POST" : 
+        new_title = request.POST.get("title")
+
+        if new_title :
+            todo.title = new_title  # 제목 업데이트
+            todo.save() # DB에 반영
+            return redirect("todo_list")    # 수정 후 다시 할 일 목록으로 이동
+        
+    return render(request, "todo/edit_todo.html", {"todo" : todo})
