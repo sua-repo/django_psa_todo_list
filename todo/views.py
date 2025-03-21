@@ -1,4 +1,4 @@
-from django.shortcuts import redirect, render
+from django.shortcuts import get_object_or_404, redirect, render
 
 from todo.models import Todo
 
@@ -21,6 +21,18 @@ def add_todo(request) :
         else:
             print("제목이 비어 있어서 추가되지 않음!")  # 터미널에서 확인
         
+        # urls.py에서 name="todo_list"로 등록한 URL로 redirect
         return redirect("todo_list")
     
     return render(request, "todo/add_todo.html")  # GET 요청 시 폼을 보여줌
+
+# dev_4
+def complete_todo(request, todo_id) : 
+    # 지정한 객체를 가져오되, 없으면 404 에러
+    # http://127.0.0.1:8000/todo/complete/999/ => id=999인 todo가 없으면 에러
+    # get_object_or_404를 통해 자동으로 404 페이지로 이동
+    
+    todo = get_object_or_404(Todo, id=todo_id)
+    todo.is_completed = True
+    todo.save()
+    return redirect("todo_list")

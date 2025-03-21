@@ -4,7 +4,7 @@ from django.db import models
 
 class Todo(models.Model) : 
     title = models.CharField(max_length=255)    # todo 제목
-    is_completes = models.BooleanField(default=False)   # todo 완료 여부
+    is_completed = models.BooleanField(default=False)   # todo 완료 여부
     
     created_at = models.DateTimeField(auto_now_add=True)    # todo 생성 날짜 (객체가 처음 생성될 때만 현재 시간이 저장)
     # updated_at = models.DateTimeField(auto_now=True)    # todo 수정 날짜 (객체가 수정될 때마다 현재 시간이 저장)

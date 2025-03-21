@@ -15,18 +15,26 @@
 
     <ul class="list-group">
         {% for todo in todos %}
-            <li class="list-group-item d-flex justify-content-between align-items-center" style="height:10vh">
-                {{ todo.title }}
-                
-                {% if todo.is_completed %}
-                    <span class="badge bg-success">완료</span>
-                {% else %}
-                    <span class="badge bg-danger">미완료</span>
-                {% endif %}
+            <li class="list-group-item d-flex justify-content-between align-items-center" style="height: 10vh;">
+                <span>{{ todo.title }}</span>
+
+                <div class="d-flex align-items-center gap-2">
+                    <form method="POST" action="{% url 'complete_todo' todo.id %}">
+                        {% csrf_token %}
+                        <button type="submit" class="btn btn-success btn-sm">완료</button>
+                    </form>
+
+                    {% if todo.is_completed %}
+                        <span class="badge bg-success">완료</span>
+                    {% else %}
+                        <span class="badge bg-danger">미완료</span>
+                    {% endif %}
+                </div>
             </li>
         {% empty %}
             <li class="list-group-item text-muted">할 일이 없습니다.</li>
         {% endfor %}
     </ul>
+
 </body>
 </html>
