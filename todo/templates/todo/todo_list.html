@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>To-do List</title>
+</head>
+<body>
+    <h1>할 일 목록</h1>
+    <ul>
+        {% for todo in todos %}
+            <li>
+                {{ todo.title }} - {% if todo.is_completed %} 완료 {% else %} 미완료 {% endif %}
+            </li>
+            {% empty %}
+                <li>할 일이 없습니다.</li>
+        {% endfor %}
+    </ul>
+</body>
+</html>
