@@ -8,11 +8,24 @@ from todo.models import Todo
 def todo_list(request) : 
     # dev_2
     # todos = Todo.objects.all()   # 모든 todo 객체를 가져옴
+    
     # dev_4
     # todos = Todo.objects.filter(is_completed = False)   # 미완료 todo 객체만 필터링
 
     # dev_8
-    todos = Todo.objects.filter(is_completed = False).order_by("-important", "created_at")  # 미완료 todo 객체를 중요순(내림차순) - 등록순(오름차순)으로 정렬
+    # todos = Todo.objects.filter(is_completed = False).order_by("-important", "created_at")  # 미완료 todo 객체를 중요순(내림차순) - 등록순(오름차순)으로 정렬
+    
+    # dev_9
+    query = request.GET.get("q")  # 검색어 가져오기
+
+    if query : 
+        # 제목에 검색어가 포함된 할 일을 중요도순 - 등록순으로 정렬
+        todos = Todo.objects.filter(is_completed = False, title__icontains=query).order_by("-important", "created_at")
+
+    else : 
+        # 검색어 없으면 전체 미완료 리스트
+        todos = Todo.objects.filter(is_completed = False).order_by("-important", "created_at")
+
     return render(request, "todo/todo_list.html", {"todos" : todos})    # todo_list.html 파일을 렌더링하면서 할 일 목록을 전달
 
 # dev_3 
@@ -44,11 +57,25 @@ def complete_todo(request, todo_id) :
     todo.is_completed = True
     todo.save()
     return redirect("todo_list")
+    
+    
 
+# dev_4    
 def completed_todos(request):
-    todos = Todo.objects.filter(is_completed=True)  # 완료순
+    # dev_4
+    # todos = Todo.objects.filter(is_completed=True)  # 완료순
     # todos = Todo.objects.filter(is_completed=True).order_by('-created_at')    # 생성순
+    
+    # dev_9
+    query = request.GET.get("q")    # 검색어 가져오기
+
+    if query: 
+        todos = Todo.objects.filter(is_completed=True, title__icontains=query).order_by("-important", "created_at")
+    else : 
+        todos = Todo.objects.filter(is_completed=True)      # 검색어 없으면 모든 완료 리스트
+
     return render(request, "todo/completed_list.html", {"todos": todos})
+
 
 
 # dev_5
@@ -57,7 +84,7 @@ def edit_todo(request, todo_id) :
     
     if request.method == "POST" : 
         new_title = request.POST.get("title")
-        
+
         # dev_8
         important = request.POST.get("important") == "on"
 

@@ -58,3 +58,23 @@ todo/urls.py에서 path("", todo_list, name="todo_list"),
             fields = ["title"]  # ✅ title 필드만 사용
 
     추가하면 is_valid() 사용 가능 / 일단 사용하진 않겠음
+
+## views.py에서 get_object_or_404() vs Todo.objects.~() 차이
+
+    - get_object_or_404()
+    : 단일 객체 1개 가져올 때
+    : 예외 처리는 자동으로 404 반환
+    : 반환값은 Todo 객체 1개
+    : 수정 / 삭제 / 단건 조회
+
+    - Todo.objects.~()
+    : 여러 객체 목록 가져올 때
+    : 예외 처리는 직접 해야 함
+    : 반환값은 QuerySet
+    : 목록 조회 / 검색 등
+
+    그런데 왜 todo 추가할 땐 get_object_or_404()가 아니라 Todo.objects.create()를 썼을까?
+
+    =>  이미 있는 데이터를 가져오는 경우엔 get_object_or_404()를 사용하지만 (DB에 있는 거 읽기 or 404)
+        새로운 데이터를 생성하는 경우엔 Todo.objects.create()를 사용 (DB에 새로운 레코드 쓰기)
+        나중에 get_or_create() 같은 것도 나오는데 “없으면 만들고 있으면 가져와” 라는 혼합형
