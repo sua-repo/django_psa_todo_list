@@ -9,7 +9,10 @@ def todo_list(request) :
     # dev_2
     # todos = Todo.objects.all()   # 모든 todo 객체를 가져옴
     # dev_4
-    todos = Todo.objects.filter(is_completed = False)   # 미완료 todo 객체만 필터링
+    # todos = Todo.objects.filter(is_completed = False)   # 미완료 todo 객체만 필터링
+
+    # dev_8
+    todos = Todo.objects.filter(is_completed = False).order_by("-important", "created_at")  # 미완료 todo 객체를 중요순(내림차순) - 등록순(오름차순)으로 정렬
     return render(request, "todo/todo_list.html", {"todos" : todos})    # todo_list.html 파일을 렌더링하면서 할 일 목록을 전달
 
 # dev_3 
@@ -17,9 +20,12 @@ def add_todo(request) :
     # 사용자가 POST 요청을 보내면, 입력한 제목을 받아와서 새로운 할 일을 데이터베이스에 저장
     if request.method == "POST" : 
         title = request.POST.get("title")   # 폼에서 입력된 title 가져오기
+        
+        # dev_8
+        important = request.POST.get("important") == "on"
         if title : 
-            Todo.objects.create(title=title)    # title이 비어있지 않으면 새 할 일 저장
-            print("할 일이 정상적으로 추가됨!")  # 터미널에서 확인
+            Todo.objects.create(title=title, important=important)    # title이 비어있지 않으면 새 할 일 저장
+            print("할 일이 정상적으로 추가됨! 중요 : ", important)  # 터미널에서 확인
         else:
             print("제목이 비어 있어서 추가되지 않음!")  # 터미널에서 확인
         
@@ -46,15 +52,18 @@ def completed_todos(request):
 
 
 # dev_5
-
 def edit_todo(request, todo_id) : 
     todo = get_object_or_404(Todo, id = todo_id)
     
     if request.method == "POST" : 
         new_title = request.POST.get("title")
+        
+        # dev_8
+        important = request.POST.get("important") == "on"
 
         if new_title :
             todo.title = new_title  # 제목 업데이트
+            todo.important = important  # 중요 표시도 수정 가능     # dev_8
             todo.save() # DB에 반영
             return redirect("todo_list")    # 수정 후 다시 할 일 목록으로 이동
         

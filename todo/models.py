@@ -10,5 +10,7 @@ class Todo(models.Model) :
     # updated_at = models.DateTimeField(auto_now=True)    # todo 수정 날짜 (객체가 수정될 때마다 현재 시간이 저장)
     # created_at은 생성 시각을 저장하고, updated_at을 추가하면 수정된 시간도 추적할 수 있음
 
+    important = models.BooleanField(default=False)  # 중요 표시 필드 추가
+    
     def __str__(self) :
         return self.title   # 관리자 페이지에서 객체를 제목으로 표시
