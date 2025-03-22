@@ -1,5 +1,5 @@
 from django.urls import path
-from .views import add_todo, complete_todo, completed_todos, delete_todo, edit_todo, todo_list
+from .views import add_todo, complete_todo, completed_todos, delete_todo, edit_todo, todo_list, undo_todo
 
 
 urlpatterns = [
@@ -12,5 +12,6 @@ urlpatterns = [
     path('completed/', completed_todos, name='completed_todos'),    # dev_4
     path('edit/<int:todo_id>', edit_todo, name='edit_todo'),    # dev_5
     path('delete/<int:todo_id>', delete_todo, name='delete_todo'),    # dev_6
+    path('undo/<int:todo_id>', undo_todo, name='undo_todo'),    # dev_7
 
 ]

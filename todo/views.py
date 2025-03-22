@@ -68,3 +68,11 @@ def delete_todo(request, todo_id) :
     # 등록이나 수정은 save() 해야 하지만 삭제는 데이터베이스에서 해당 객체를 완전히 삭제해버리기 때문에 save()할 필요 없음
     # 필드 값을 변경하는 게 아닌 데이터 자체를 삭제
     return redirect("todo_list")
+
+
+# dev_7
+def undo_todo(request, todo_id) : 
+    todo = get_object_or_404(Todo, id = todo_id)
+    todo.is_completed = False   # 완료 상태 해제 (미완료로 변경)
+    todo.save()
+    return redirect("todo_list")    # 미완료 목록으로 이동

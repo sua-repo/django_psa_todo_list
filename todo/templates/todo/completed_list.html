@@ -9,18 +9,29 @@
 <body class="container mt-4">
     <div class="d-flex justify-content-between align-items-center mb-3">
         <h1 class="m-0">완료된 할 일</h1>
-        <a href="{% url 'todo_list' %}" class="btn btn-secondary">전체 목록으로</a>
+        <a href="{% url 'todo_list' %}" class="btn btn-secondary">미완료 목록</a>
     </div>
 
     <ul class="list-group">
         {% for todo in todos %}
             <li class="list-group-item d-flex justify-content-between align-items-center" style="height: 10vh;">
                 <span>{{ todo.title }}</span>
-                <span class="badge bg-success">완료</span>
+
+                <div class="d-flex align-items-center gap-2">
+                    <!-- ✅ 되돌리기 버튼 먼저 -->
+                    <form method="POST" action="{% url 'undo_todo' todo.id %}">
+                        {% csrf_token %}
+                        <button type="submit" class="btn btn-warning btn-sm">되돌리기</button>
+                    </form>
+
+                    <!-- ✅ 완료 배지 -->
+                    <span class="badge bg-success">완료</span>
+                </div>
             </li>
         {% empty %}
             <li class="list-group-item text-muted">완료된 할 일이 없습니다.</li>
         {% endfor %}
     </ul>
+
 </body>
 </html>
