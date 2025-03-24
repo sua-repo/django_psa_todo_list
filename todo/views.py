@@ -1,11 +1,17 @@
+from datetime import timedelta
 from django.shortcuts import get_object_or_404, redirect, render
-
+from django.utils import timezone
 from todo.models import Todo
 
 # Create your views here.
 
 # dev_2
 def todo_list(request) : 
+    # dev_10
+    auto_delete_period = timezone.now() - timedelta(days=3)     # 완료한 todo 3일 뒤 삭제
+
+    Todo.objects.filter(is_completed=True, created_at__lt=auto_delete_period).delete()
+
     # dev_2
     # todos = Todo.objects.all()   # 모든 todo 객체를 가져옴
     
