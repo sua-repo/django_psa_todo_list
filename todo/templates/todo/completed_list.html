@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Completed To-do</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body class="container mt-4">
+    <div class="d-flex justify-content-between align-items-end mb-3">
+        <h1 class="m-0">완료된 할 일</h1>
+
+        <div class="d-flex align-items-center gap-2">
+            <form method="GET" class="d-flex align-items-center mb-0" role="search">
+                <input class="form-control form-control-sm me-1" type="search" name="q" placeholder="할 일 검색..." value="{{ request.GET.q }}">
+                <button class="btn btn-outline-secondary btn-sm" type="submit" style="white-space: nowrap;">검색</button>
+            </form>
+            <a href="{% url 'todo_list' %}" class="btn btn-secondary">미완료 목록</a>
+        </div>
+        
+    </div>
+    
+    <ul class="list-group">
+        {% for todo in todos %}
+            <li class="list-group-item d-flex justify-content-between align-items-center" style="height: 10vh;">
+                <span>{{ todo.title }}</span>
+
+                <div class="d-flex align-items-center gap-2">
+                    <!-- ✅ 되돌리기 버튼 먼저 -->
+                    <form method="POST" action="{% url 'undo_todo' todo.id %}">
+                        {% csrf_token %}
+                        <button type="submit" class="btn btn-warning btn-sm">되돌리기</button>
+                    </form>
+
+                    <!-- ✅ 완료 배지 -->
+                    <span class="badge bg-success">완료</span>
+                </div>
+            </li>
+        {% empty %}
+            <li class="list-group-item text-muted">완료된 할 일이 없습니다.</li>
+        {% endfor %}
+    </ul>
+
+</body>
+</html>

@@ -1,1 +1,11 @@
-/db.sqlite3
+# 가상환경 폴더
+venv/
+env_django/
+
+# 데이터베이스 파일
+db.sqlite3
+
+# Pycache 폴더
+__pycache__/
+*.pyc
+*.pyo
