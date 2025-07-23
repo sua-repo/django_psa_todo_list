@@ -10,7 +10,7 @@ def todo_list(request) :
     # dev_10
     auto_delete_period = timezone.now() - timedelta(days=3)     # 완료한 todo 3일 뒤 삭제
 
-    Todo.objects.filter(is_completed=True, created_at__lt=auto_delete_period).delete()
+    Todo.objects.filter(is_completed=True, completed_at__lt=auto_delete_period).delete()
 
     # dev_2
     # todos = Todo.objects.all()   # 모든 todo 객체를 가져옴
@@ -61,6 +61,7 @@ def complete_todo(request, todo_id) :
 
     todo = get_object_or_404(Todo, id=todo_id)
     todo.is_completed = True
+    todo.completed_at = timezone.now()  # 완료 시간 저장
     todo.save()
     return redirect("todo_list")
     
@@ -116,5 +117,6 @@ def delete_todo(request, todo_id) :
 def undo_todo(request, todo_id) : 
     todo = get_object_or_404(Todo, id = todo_id)
     todo.is_completed = False   # 완료 상태 해제 (미완료로 변경)
+    todo.completed_at = None  # 완료 시간 초기화
     todo.save()
     return redirect("todo_list")    # 미완료 목록으로 이동

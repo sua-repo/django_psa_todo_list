@@ -12,5 +12,7 @@ class Todo(models.Model) :
 
     important = models.BooleanField(default=False)  # 중요 표시 필드 추가
     
+    completed_at = models.DateTimeField(null=True, blank=True)  # 자동 삭제 기준이 되는 완료 날짜 필드 추가
+
     def __str__(self) :
         return self.title   # 관리자 페이지에서 객체를 제목으로 표시
